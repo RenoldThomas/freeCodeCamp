@@ -23,7 +23,11 @@ def convert_to_snake_case(pascal_or_camel_cased_string):
     return ''.join(snake_cased_char_list).strip('_')
 
 def main():
-    print(convert_to_snake_case('IAmAPascalCasedString'))
+    while True:
+        user_input = input('Enter a Pascal or Camel cased string (or exit): ')
+        if user_input == 'exit':
+            break
+        print(convert_to_snake_case(user_input))
 
     
 
