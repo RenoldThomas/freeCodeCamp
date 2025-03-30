@@ -1,3 +1,8 @@
+# Renold Thomas
+# This script generates a random password based on user-defined criteria.
+# It ensures that the password meets the specified requirements for length, numbers, special characters,
+# uppercase letters, and lowercase letters.
+
 import re
 import secrets
 import string

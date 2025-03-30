@@ -1,3 +1,8 @@
+# Renold Thomas
+# This program arranges arithmetic problems in a neat format.
+# It takes a list of problems, checks for errors, and formats them for display.
+# It can also show the answers if specified.
+
 def arithmetic_arranger(problems, show_answers=False):
     if len(problems) > 5:
         return('Error: Too many problems.')

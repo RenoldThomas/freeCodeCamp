@@ -1,5 +1,6 @@
 # Renold Thomas
 # Program to track expenses using lambda functions
+
 def add_expense(expenses, amount, category):
     expenses.append({'amount': amount, 'category': category})
     
