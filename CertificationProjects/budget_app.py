@@ -1,3 +1,8 @@
+# Renold Thomas
+# Budget App
+# This code implements a simple budget app with categories for deposits, withdrawals, and transfers.
+# It also includes a function to create a spend chart based on the spending in each category.
+
 class Category:
     def __init__(self, category):
         self.category = category
