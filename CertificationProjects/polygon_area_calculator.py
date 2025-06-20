@@ -1,3 +1,9 @@
+# Renold Thomas
+# Polygon Area Calculator
+# This program defines two classes: Rectangle and Square.
+# Each class has methods to calculate area, perimeter, diagonal, and picture representation.
+# Additionally, it includes methods to set dimensions and calculate how many times one shape can fit inside another.
+
 class Rectangle:
     def __init__(self, width, height):
         self.width = width
