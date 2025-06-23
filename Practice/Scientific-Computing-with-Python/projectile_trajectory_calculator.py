@@ -1,3 +1,6 @@
+# Renold Thomas
+# Program to calculate and display the trajectory of a projectile
+
 import math
 
 GRAVITATIONAL_ACCELERATION = 9.81

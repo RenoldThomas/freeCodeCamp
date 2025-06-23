@@ -1,3 +1,6 @@
+# Renold Thomas
+# Program to solve Tower of Hanoi problem using recursion
+
 NUMBER_OF_DISKS = 5
 A = list(range(NUMBER_OF_DISKS, 0, -1))
 B = []

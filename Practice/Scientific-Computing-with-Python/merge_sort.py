@@ -1,3 +1,6 @@
+# Renold Thomas
+# Program to sort an array using Merge Sort algorithm
+
 def merge_sort(array):
     if len(array) <= 1:
         return
