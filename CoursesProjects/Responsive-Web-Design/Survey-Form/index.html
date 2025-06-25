@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback Survey</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1 id="title">We Value Your Feedback</h1>
+    <p id="description">Take 2 minutes to tell us how we're doing and how we can do better.”</p>
+
+    <form id="survey-form">
+        <fieldset>
+            <legend>Personal Information</legend>
+            <label for="name" id="name-label">Name: <input required type="text" id="name"
+                    placeholder="John Doe"></label>
+            <label for="email" id="email-label">Email: <input required type="email" id="email"
+                    placeholder="someone@example.com" /></label>
+            <label for="number" id="number-label">Rate us (1-10): <input required type="number" id="number" min="1"
+                    max="10" placeholder="10" /></label>
+        </fieldset>
+
+        <fieldset>
+            <legend>How did you hear about us?</legend>
+            <select id="dropdown">
+                <option>(select one)</option>
+                <option>Website</option>
+                <option>Social Media</option>
+                <option>Family/Friend</option>
+                <option>Other</option>
+            </select>
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Why us?</legend>
+            <label for="price"><input checked class="inline" type="radio" id="price" name="reason"
+                    value="best-price" />You had the best price</label>
+            <label for="testimonials"><input class="inline" type="radio" id="testimonials" name="reason"
+                    value="positive-reviews" />Positive reviews or testimonials</label>
+            <label for="quality"><input class="inline" type="radio" id="quality" name="reason"
+                    value="high-quality" />Product looked high quality</label>
+            <label for="other"><input class="inline" type="radio" id="other" name="reason"
+                    value="other-reason" />Other</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Which of the following apply to you?</legend>
+            <label for="productivity"><input class="inline" type="checkbox" id="productivity"
+                    value="increase-productivity" />I use this service for personal productivity</label>
+            <label for="academics"><input class="inline" type="checkbox" id="academics" value="school" />I use it for
+                school or academics</label>
+            <label for="business"><input class="inline" type="checkbox" id="business" value="work" />I use it for work
+                or business tasks</label>
+            <label for="creative"><input class="inline" type="checkbox" id="creative" value="creative-works" />I use it
+                for creative works</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Additional Comments?</legend>
+            <textarea placeholder="I think..." rows="3" cols="30"></textarea>
+        </fieldset>
+        <label for="submit"><input type="submit" id="submit" /></label>
+    </form>
+</body>
+</html>
