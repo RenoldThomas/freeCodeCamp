@@ -12,8 +12,8 @@ All projects and exercises in this repository are based on curricula and challen
 
 The repository is organized into two main sections:
 
-### CoursesProjects/
-Contains completed certification projects required for freeCodeCamp certificates.
+### CoursesCertificationProjects/
+Contains completed certification projects required for each freeCodeCamp certificates.
 
 ### Practice/
 Contains practice exercises, learning implementations, and experimental code developed while working through the curricula.
