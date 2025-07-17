@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!-- 
+Renold Thomas
+Technical Documentation about React.js for FreeCodeCamp's Responsive Web Design Certification Project
+This document provides an overview of React.js, its features, and how to get started with it
+The document is structured with a navigation bar and main content sections, each with headers and paragraphs
+The document includes code snippets, lists, and explanations of key concepts in React.js
+The document is styled with an external CSS file linked in the head section
+The document is written in HTML5 and uses semantic elements for better accessibility and SEO
+The document is designed to be responsive and user-friendly, following best practices for technical documentation
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React.js Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav id="navbar">
+        <header>React.js Documentation</header>
+        <a class="nav-link" href="#Introduction">Introduction</a>
+        <a class="nav-link" href="#Getting_Started">Getting Started</a>
+        <a class="nav-link" href="#Components">Components</a>
+        <a class="nav-link" href="#State_and_Props">State and Props</a>
+        <a class="nav-link" href="#Hooks">Hooks</a>
+        <a class="nav-link" href="#Event_Handling">Event Handling</a>
+        <a class="nav-link" href="#Lifecycle_Methods">Lifecycle Methods</a>
+    </nav>
+
+    <main id="main-doc">
+        <section class="main-section" id="Introduction">
+            <header>Introduction</header>
+            <p>React is a JavaScript library for building user interfaces, particularly web applications. It was
+                developed by Facebook and is now maintained by Meta and the open-source community.</p>
+            <p>React allows developers to create large web applications that can change data, without reloading the
+                page. The main purpose of React is to be fast, scalable, and simple.</p>
+            <p>React uses a declarative programming paradigm, which means you describe what the UI should look like for
+                any given state, and React will efficiently update and render just the right components when your data
+                changes.</p>
+            <p>The library is component-based, allowing you to build encapsulated components that manage their own
+                state, then compose them to make complex UIs.</p>
+            <code>import React from 'react';</code>
+            <ul>
+                <li>Declarative: React makes it painless to create interactive UIs</li>
+                <li>Component-Based: Build encapsulated components that manage their own state</li>
+                <li>Learn Once, Write Anywhere: Develop new features without rewriting existing code</li>
+            </ul>
+        </section>
+
+        <section class="main-section" id="Getting_Started">
+            <header>Getting Started</header>
+            <p>To get started with React, you need to have Node.js installed on your computer. Once you have Node.js,
+                you can use Create React App to set up a new React project quickly.</p>
+            <p>Create React App is an officially supported way to create single-page React applications. It offers a
+                modern build setup with no configuration.</p>
+            <pre><code>npx create-react-app my-app
+cd my-app
+npm start</code></pre>
+            <p>This will create a new React application in the <code>my-app</code> directory and start the development
+                server.</p>
+            <p>The development server will automatically reload the page when you make changes to the source code,
+                making development faster and more efficient.</p>
+            <ul>
+                <li>Install Node.js from the official website</li>
+                <li>Use npm or yarn as your package manager</li>
+                <li>Create React App provides a good starting point for beginners</li>
+            </ul>
+        </section>
+
+        <section class="main-section" id="Components">
+            <header>Components</header>
+            <p>Components are the building blocks of React applications. They let you split the UI into independent,
+                reusable pieces, and think about each piece in isolation.</p>
+            <p>Components can be defined as JavaScript functions or classes. Function components are simpler and are the
+                recommended way to write components in modern React.</p>
+            <pre><code>function Welcome(props) {
+  return &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;;
+}
+
+// Or as an arrow function
+const Welcome = (props) => {
+  return &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;;
+};</code></pre>
+            <p>Components can accept arbitrary inputs called "props" and return React elements describing what should
+                appear on the screen.</p>
+            <p>Always start component names with a capital letter. React treats components starting with lowercase
+                letters as DOM tags.</p>
+            <ul>
+                <li>Function components are simpler and more commonly used</li>
+                <li>Class components have additional features like lifecycle methods</li>
+                <li>Components should be pure functions when possible</li>
+            </ul>
+        </section>
+
+        <section class="main-section" id="State_and_Props">
+            <header>State and Props</header>
+            <p>Props (short for properties) are a way of passing data from parent to child components. They are
+                read-only and should not be modified by the child component.</p>
+            <p>State is a way for components to manage their own data. Unlike props, state can be changed using the
+                <code>setState</code> method in class components or the <code>useState</code> hook in function
+                components.
+            </p>
+            <pre><code>// Props example
+function Greeting(props) {
+  return &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;;
+}
+
+// State example with useState hook
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;You clicked {count} times&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+        Click me
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            <p>State should be treated as immutable. Always use the setter function to update state, never modify state
+                directly.</p>
+            <ul>
+                <li>Props flow down from parent to child components</li>
+                <li>State is local to the component that owns it</li>
+                <li>State updates trigger re-renders of the component</li>
+            </ul>
+        </section>
+
+        <section class="main-section" id="Hooks">
+            <header>Hooks</header>
+            <p>Hooks are a new addition in React 16.8 that let you use state and other React features without writing a
+                class component.</p>
+            <p>The most commonly used hooks are <code>useState</code> for managing state and <code>useEffect</code> for
+                side effects like data fetching, subscriptions, or manually changing the DOM.</p>
+            <pre><code>import React, { useState, useEffect } from 'react';
+
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    fetchUser(userId).then(setUser);
+  }, [userId]);
+  
+  if (!user) return &lt;div&gt;Loading...&lt;/div&gt;;
+  
+  return &lt;div&gt;Welcome, {user.name}!&lt;/div&gt;;
+}</code></pre>
+            <p>Hooks follow two important rules: only call hooks at the top level of your React function, and only call
+                hooks from React functions.</p>
+            <ul>
+                <li>useState: Adds state to function components</li>
+                <li>useEffect: Performs side effects in function components</li>
+                <li>useContext: Consumes context values</li>
+                <li>useReducer: Alternative to useState for complex state logic</li>
+            </ul>
+        </section>
+
+        <section class="main-section" id="Event_Handling">
+            <header>Event Handling</header>
+            <p>React events are named using camelCase, not lowercase. With JSX you pass a function as the event handler,
+                rather than a string.</p>
+            <p>React uses SyntheticEvent, a cross-browser wrapper around the browser's native event. It has the same
+                interface as native events, but works consistently across all browsers.</p>
+            <pre><code>function Button() {
+  function handleClick(e) {
+    e.preventDefault();
+    console.log('The link was clicked.');
+  }
+
+  return (
+    &lt;button onClick={handleClick}&gt;
+      Click me
+    &lt;/button&gt;
+  );
+}</code></pre>
+            <p>You cannot return <code>false</code> to prevent default behavior in React. You must call
+                <code>preventDefault</code> explicitly.
+            </p>
+            <p>Event handlers receive a SyntheticEvent object as their first parameter, which wraps the native event and
+                provides a consistent API across different browsers.</p>
+            <ul>
+                <li>Use camelCase for event names (onClick, onChange, onSubmit)</li>
+                <li>Pass functions as event handlers, not strings</li>
+                <li>Use preventDefault() to prevent default browser behavior</li>
+            </ul>
+        </section>
+
+        <section class="main-section" id="Lifecycle_Methods">
+            <header>Lifecycle Methods</header>
+            <p>Lifecycle methods are special methods in class components that run at specific points in a component's
+                life. They allow you to hook into different phases of a component's existence.</p>
+            <p>The three main phases are mounting (when component is created), updating (when props or state change),
+                and unmounting (when component is removed).</p>
+            <p>In modern React with hooks, lifecycle methods are replaced by the <code>useEffect</code> hook, which can
+                handle all lifecycle scenarios.</p>
+            <pre><code>// Class component lifecycle
+class MyComponent extends React.Component {
+  componentDidMount() {
+    // Runs after component mounts
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    // Runs after component updates
+  }
+  
+  componentWillUnmount() {
+    // Runs before component unmounts
+  }
+}
+
+// Hook equivalent
+function MyComponent() {
+  useEffect(() => {
+    // componentDidMount logic
+    
+    return () => {
+      // componentWillUnmount logic
+    };
+  }, []); // Empty dependency array = componentDidMount
+}</code></pre>
+            <p>Common lifecycle methods include <code>componentDidMount</code>, <code>componentDidUpdate</code>, and
+                <code>componentWillUnmount</code>.
+            </p>
+            <ul>
+                <li>Mounting: constructor, componentDidMount</li>
+                <li>Updating: componentDidUpdate, getSnapshotBeforeUpdate</li>
+                <li>Unmounting: componentWillUnmount</li>
+                <li>Error Handling: componentDidCatch, getDerivedStateFromError</li>
+            </ul>
+        </section>
+    </main>
+</body>
+
+</html>
