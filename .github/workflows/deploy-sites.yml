@@ -1,0 +1,172 @@
+# .github/workflows/deploy-sites.yml
+name: Auto-Deploy All Projects
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  find-projects:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.find.outputs.projects }}
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Find all projects
+      id: find
+      run: |
+        projects=""
+        for project_dir in CoursesCertificationProjects/Responsive-Web-Design/*/; do
+          if [ -d "$project_dir" ] && [ -f "${project_dir}index.html" ]; then
+            project_name=$(basename "$project_dir")
+            url_name=$(echo "$project_name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+            if [ -z "$projects" ]; then
+              projects="$project_name:$url_name:$project_dir"
+            else
+              projects="$projects|$project_name:$url_name:$project_dir"
+            fi
+          fi
+        done
+        echo "projects=$projects" >> $GITHUB_OUTPUT
+        echo "Found projects: $projects"
+
+  deploy:
+    needs: find-projects
+    runs-on: ubuntu-latest
+    if: needs.find-projects.outputs.projects != ''
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy all projects
+      run: |
+        IFS='|' read -ra PROJECT_LIST <<< "${{ needs.find-projects.outputs.projects }}"
+        
+        # Create portfolio index
+        mkdir -p _site
+        cat > _site/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>My freeCodeCamp Projects</title>
+            <style>
+                body { 
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                    max-width: 1200px; 
+                    margin: 0 auto; 
+                    padding: 40px 20px; 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    min-height: 100vh;
+                    color: white;
+                }
+                h1 { 
+                    text-align: center; 
+                    font-size: 2.5rem; 
+                    margin-bottom: 50px;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                }
+                .projects { 
+                    display: grid; 
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+                    gap: 30px; 
+                }
+                .project-card { 
+                    background: rgba(255,255,255,0.1); 
+                    padding: 30px; 
+                    border-radius: 15px; 
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    transition: transform 0.3s ease;
+                }
+                .project-card:hover {
+                    transform: translateY(-5px);
+                }
+                .project-card h2 { 
+                    margin-top: 0; 
+                    color: #fff;
+                    font-size: 1.3rem;
+                }
+                .project-link { 
+                    display: inline-block; 
+                    background: rgba(255,255,255,0.2); 
+                    color: white; 
+                    padding: 12px 24px; 
+                    text-decoration: none; 
+                    border-radius: 25px; 
+                    border: 2px solid rgba(255,255,255,0.3);
+                    transition: all 0.3s ease;
+                    font-weight: 500;
+                }
+                .project-link:hover { 
+                    background: rgba(255,255,255,0.3);
+                    transform: scale(1.05);
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 50px;
+                    opacity: 0.8;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>🚀 My freeCodeCamp Projects</h1>
+            <div class="projects">
+        EOF
+        
+        # Add each project to index
+        for project in "${PROJECT_LIST[@]}"; do
+          IFS=':' read -ra PROJECT_INFO <<< "$project"
+          project_name="${PROJECT_INFO[0]}"
+          url_name="${PROJECT_INFO[1]}"
+          project_path="${PROJECT_INFO[2]}"
+          
+          echo "Processing: $project_name -> $url_name"
+          
+          # Copy project to _site
+          mkdir -p "_site/$url_name"
+          cp -r "$project_path"* "_site/$url_name/"
+          
+          # Add to portfolio index
+          cat >> _site/index.html << EOF
+                <div class="project-card">
+                    <h2>$project_name</h2>
+                    <a href="./$url_name/" class="project-link">View Project →</a>
+                </div>
+        EOF
+        done
+        
+        # Finish the HTML
+        cat >> _site/index.html << 'EOF'
+            </div>
+            <div class="footer">
+                <p>Built with ❤️ for freeCodeCamp</p>
+            </div>
+        </body>
+        </html>
+        EOF
+        
+        echo "Portfolio created with projects:"
+        ls -la _site/
+    
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: ./_site
+
+  deploy-pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
