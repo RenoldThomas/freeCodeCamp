@@ -1,86 +1,94 @@
 # .github/workflows/deploy-sites.yml
-name: Deploy Multiple Sites
+name: Auto-Deploy All Projects
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  check-changes:
+  find-and-deploy:
     runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Find Projects and Create Matrix
+      id: find-projects
+      run: |
+        projects=()
+        for project_dir in CoursesCertificationProjects/Responsive-Web-Design/*/; do
+          if [ -d "$project_dir" ] && [ -f "${project_dir}index.html" ]; then
+            project_name=$(basename "$project_dir")
+            url_name=$(echo "$project_name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+            projects+=("{\"name\":\"$project_name\",\"url\":\"$url_name\",\"path\":\"$project_dir\"}")
+          fi
+        done
+        
+        # Join array elements with commas
+        IFS=','
+        matrix_json="[${projects[*]}]"
+        echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
+        echo "Found projects: $matrix_json"
+        
     outputs:
-      product-landing: ${{ steps.changes.outputs.product-landing }}
-      survey-form: ${{ steps.changes.outputs.survey-form }}
-      tech-docs: ${{ steps.changes.outputs.tech-docs }}
-      tribute-page: ${{ steps.changes.outputs.tribute-page }}
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 2
-        
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          product-landing:
-            - 'CoursesCertificationProjects/Responsive-Web-Design/Product-Landing-Page/**'
-          survey-form:
-            - 'CoursesCertificationProjects/Responsive-Web-Design/Survey-Form/**'
-          tech-docs:
-            - 'CoursesCertificationProjects/Responsive-Web-Design/Technical-Documentation/**'
-          tribute-page:
-            - 'CoursesCertificationProjects/Responsive-Web-Design/Tribute-Page/**'
+      matrix: ${{ steps.find-projects.outputs.matrix }}
 
-  deploy-all:
+  deploy:
+    needs: find-and-deploy
+    if: needs.find-and-deploy.outputs.matrix != '[]'
     runs-on: ubuntu-latest
-    needs: check-changes
-    if: always()
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.find-and-deploy.outputs.matrix) }}
     steps:
     - uses: actions/checkout@v3
     
-    - name: Deploy Product Landing Page
-      if: needs.check-changes.outputs.product-landing == 'true'
+    - name: Deploy ${{ matrix.project.name }}
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Product-Landing-Page
-        destination_dir: product-landing-page
+        publish_dir: ${{ matrix.project.path }}
+        destination_dir: ${{ matrix.project.url }}
         
-    - name: Deploy Survey Form
-      if: needs.check-changes.outputs.survey-form == 'true'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Survey-Form
-        destination_dir: survey-form
-
-    - name: Deploy Technical Documentation
-      if: needs.check-changes.outputs.tech-docs == 'true'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Technical-Documentation
-        destination_dir: tech-docs
-
-    - name: Deploy Tribute Page
-      if: needs.check-changes.outputs.tribute-page == 'true'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Tribute-Page
-        destination_dir: tribute-page
+    - name: Create Portfolio Index
+      if: matrix.project.name == fromJson(needs.find-and-deploy.outputs.matrix)[0].name
+      run: |
+        # Create a simple portfolio index page
+        mkdir -p portfolio-index
+        cat > portfolio-index/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>My freeCodeCamp Projects Portfolio</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+                h1 { text-align: center; color: #333; }
+                .projects { display: grid; gap: 20px; margin-top: 30px; }
+                .project-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+                .project-card h2 { margin-top: 0; }
+                .project-link { display: inline-block; background: #007acc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+                .project-link:hover { background: #005a9e; }
+            </style>
+        </head>
+        <body>
+            <h1>My freeCodeCamp Projects Portfolio</h1>
+            <div class="projects">
+        EOF
         
-  # Deploy all sites on first run or when workflow changes
-  deploy-all-initial:
-    runs-on: ubuntu-latest
-    needs: check-changes
-    if: github.run_number == 1 || contains(github.event.head_commit.message, '[deploy all]')
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Deploy All Sites
+        # Add each project to the index
+        echo '${{ needs.find-and-deploy.outputs.matrix }}' | jq -r '.[] | "<div class=\"project-card\"><h2>" + .name + "</h2><a href=\"./" + .url + "/\" class=\"project-link\">View Project</a></div>"' >> portfolio-index/index.html
+        
+        cat >> portfolio-index/index.html << 'EOF'
+            </div>
+        </body>
+        </html>
+        EOF
+        
+    - name: Deploy Portfolio Index
+      if: matrix.project.name == fromJson(needs.find-and-deploy.outputs.matrix)[0].name
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
-        exclude_assets: '.github,README.md,.gitignore'
+        publish_dir: ./portfolio-index
+        keep_files: true
