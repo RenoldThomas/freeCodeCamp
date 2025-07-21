@@ -4,58 +4,83 @@ name: Deploy Multiple Sites
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  deploy-product-landing:
-    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Product-Landing-Page/')
+  check-changes:
     runs-on: ubuntu-latest
+    outputs:
+      product-landing: ${{ steps.changes.outputs.product-landing }}
+      survey-form: ${{ steps.changes.outputs.survey-form }}
+      tech-docs: ${{ steps.changes.outputs.tech-docs }}
+      tribute-page: ${{ steps.changes.outputs.tribute-page }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+        
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          product-landing:
+            - 'CoursesCertificationProjects/Responsive-Web-Design/Product-Landing-Page/**'
+          survey-form:
+            - 'CoursesCertificationProjects/Responsive-Web-Design/Survey-Form/**'
+          tech-docs:
+            - 'CoursesCertificationProjects/Responsive-Web-Design/Technical-Documentation/**'
+          tribute-page:
+            - 'CoursesCertificationProjects/Responsive-Web-Design/Tribute-Page/**'
+
+  deploy-all:
+    runs-on: ubuntu-latest
+    needs: check-changes
+    if: always()
     steps:
     - uses: actions/checkout@v3
     
     - name: Deploy Product Landing Page
+      if: needs.check-changes.outputs.product-landing == 'true'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Product-Landing-Page
         destination_dir: product-landing-page
         
-  deploy-survey-form:
-    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Survey-Form/')
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    
     - name: Deploy Survey Form
+      if: needs.check-changes.outputs.survey-form == 'true'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Survey-Form
         destination_dir: survey-form
 
-  deploy-tech-docs:
-    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Technical-Documentation/')
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    
     - name: Deploy Technical Documentation
+      if: needs.check-changes.outputs.tech-docs == 'true'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Technical-Documentation
         destination_dir: tech-docs
 
-  deploy-tribute-page:
-    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Tribute-Page/')
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    
     - name: Deploy Tribute Page
+      if: needs.check-changes.outputs.tribute-page == 'true'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Tribute-Page
         destination_dir: tribute-page
+        
+  # Deploy all sites on first run or when workflow changes
+  deploy-all-initial:
+    runs-on: ubuntu-latest
+    needs: check-changes
+    if: github.run_number == 1 || contains(github.event.head_commit.message, '[deploy all]')
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy All Sites
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        exclude_assets: '.github,README.md,.gitignore'
