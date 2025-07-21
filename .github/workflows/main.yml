@@ -5,90 +5,168 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  find-and-deploy:
+  find-projects:
     runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.find.outputs.projects }}
     steps:
     - uses: actions/checkout@v3
     
-    - name: Find Projects and Create Matrix
-      id: find-projects
+    - name: Find all projects
+      id: find
       run: |
-        projects=()
+        projects=""
         for project_dir in CoursesCertificationProjects/Responsive-Web-Design/*/; do
           if [ -d "$project_dir" ] && [ -f "${project_dir}index.html" ]; then
             project_name=$(basename "$project_dir")
             url_name=$(echo "$project_name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
-            projects+=("{\"name\":\"$project_name\",\"url\":\"$url_name\",\"path\":\"$project_dir\"}")
+            if [ -z "$projects" ]; then
+              projects="$project_name:$url_name:$project_dir"
+            else
+              projects="$projects|$project_name:$url_name:$project_dir"
+            fi
           fi
         done
-        
-        # Join array elements with commas
-        IFS=','
-        matrix_json="[${projects[*]}]"
-        echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
-        echo "Found projects: $matrix_json"
-        
-    outputs:
-      matrix: ${{ steps.find-projects.outputs.matrix }}
+        echo "projects=$projects" >> $GITHUB_OUTPUT
+        echo "Found projects: $projects"
 
   deploy:
-    needs: find-and-deploy
-    if: needs.find-and-deploy.outputs.matrix != '[]'
+    needs: find-projects
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: ${{ fromJson(needs.find-and-deploy.outputs.matrix) }}
+    if: needs.find-projects.outputs.projects != ''
     steps:
     - uses: actions/checkout@v3
     
-    - name: Deploy ${{ matrix.project.name }}
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ${{ matrix.project.path }}
-        destination_dir: ${{ matrix.project.url }}
-        
-    - name: Create Portfolio Index
-      if: matrix.project.name == fromJson(needs.find-and-deploy.outputs.matrix)[0].name
+    - name: Deploy all projects
       run: |
-        # Create a simple portfolio index page
-        mkdir -p portfolio-index
-        cat > portfolio-index/index.html << 'EOF'
+        IFS='|' read -ra PROJECT_LIST <<< "${{ needs.find-projects.outputs.projects }}"
+        
+        # Create portfolio index
+        mkdir -p _site
+        cat > _site/index.html << 'EOF'
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>My freeCodeCamp Projects Portfolio</title>
+            <title>My freeCodeCamp Projects</title>
             <style>
-                body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-                h1 { text-align: center; color: #333; }
-                .projects { display: grid; gap: 20px; margin-top: 30px; }
-                .project-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
-                .project-card h2 { margin-top: 0; }
-                .project-link { display: inline-block; background: #007acc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
-                .project-link:hover { background: #005a9e; }
+                body { 
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                    max-width: 1200px; 
+                    margin: 0 auto; 
+                    padding: 40px 20px; 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    min-height: 100vh;
+                    color: white;
+                }
+                h1 { 
+                    text-align: center; 
+                    font-size: 2.5rem; 
+                    margin-bottom: 50px;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                }
+                .projects { 
+                    display: grid; 
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+                    gap: 30px; 
+                }
+                .project-card { 
+                    background: rgba(255,255,255,0.1); 
+                    padding: 30px; 
+                    border-radius: 15px; 
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    transition: transform 0.3s ease;
+                }
+                .project-card:hover {
+                    transform: translateY(-5px);
+                }
+                .project-card h2 { 
+                    margin-top: 0; 
+                    color: #fff;
+                    font-size: 1.3rem;
+                }
+                .project-link { 
+                    display: inline-block; 
+                    background: rgba(255,255,255,0.2); 
+                    color: white; 
+                    padding: 12px 24px; 
+                    text-decoration: none; 
+                    border-radius: 25px; 
+                    border: 2px solid rgba(255,255,255,0.3);
+                    transition: all 0.3s ease;
+                    font-weight: 500;
+                }
+                .project-link:hover { 
+                    background: rgba(255,255,255,0.3);
+                    transform: scale(1.05);
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 50px;
+                    opacity: 0.8;
+                }
             </style>
         </head>
         <body>
-            <h1>My freeCodeCamp Projects Portfolio</h1>
+            <h1>🚀 My freeCodeCamp Projects</h1>
             <div class="projects">
         EOF
         
-        # Add each project to the index
-        echo '${{ needs.find-and-deploy.outputs.matrix }}' | jq -r '.[] | "<div class=\"project-card\"><h2>" + .name + "</h2><a href=\"./" + .url + "/\" class=\"project-link\">View Project</a></div>"' >> portfolio-index/index.html
+        # Add each project to index
+        for project in "${PROJECT_LIST[@]}"; do
+          IFS=':' read -ra PROJECT_INFO <<< "$project"
+          project_name="${PROJECT_INFO[0]}"
+          url_name="${PROJECT_INFO[1]}"
+          project_path="${PROJECT_INFO[2]}"
+          
+          echo "Processing: $project_name -> $url_name"
+          
+          # Copy project to _site
+          mkdir -p "_site/$url_name"
+          cp -r "$project_path"* "_site/$url_name/"
+          
+          # Add to portfolio index
+          cat >> _site/index.html << EOF
+                <div class="project-card">
+                    <h2>$project_name</h2>
+                    <a href="./$url_name/" class="project-link">View Project →</a>
+                </div>
+        EOF
+        done
         
-        cat >> portfolio-index/index.html << 'EOF'
+        # Finish the HTML
+        cat >> _site/index.html << 'EOF'
+            </div>
+            <div class="footer">
+                <p>Built with ❤️ for freeCodeCamp</p>
             </div>
         </body>
         </html>
         EOF
         
-    - name: Deploy Portfolio Index
-      if: matrix.project.name == fromJson(needs.find-and-deploy.outputs.matrix)[0].name
-      uses: peaceiris/actions-gh-pages@v3
+        echo "Portfolio created with projects:"
+        ls -la _site/
+    
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./portfolio-index
-        keep_files: true
+        path: ./_site
+
+  deploy-pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
