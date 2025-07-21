@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- 
+Renold Thomas
+This is a Brew Bliss Coffee landing page with 3 sections promoting the shop. -->
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew Bliss - Premium Coffee Delivered</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header id="header">
+        <img id="header-img" src="BrewBlissLogo.png" alt="Brew Bliss Logo">
+        <nav id="nav-bar">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#subscribe" class="nav-link">Subscribe</a>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Brew Bliss</h1>
+            <h2 class="hero-subtitle">Premium Coffee Delivered to Your Door</h2>
+            <p class="hero-description">
+                Experience the world's finest coffee beans, carefully selected and roasted to perfection.
+                Start your journey to coffee enlightenment with our curated subscription service.
+            </p>
+            <a href="#subscribe" class="cta-button">Start Your Journey</a>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">☕</div>
+                <h3>Premium Beans</h3>
+                <p>Hand-selected from the world's best coffee regions</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🚚</div>
+                <h3>Fresh Delivery</h3>
+                <p>Roasted to order and delivered within 48 hours</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3>Personalized</h3>
+                <p>Customized to your taste preferences and brewing style</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title">Our Coffee Journey</h2>
+        <p class="section-subtitle">
+            Discover how we source, roast, and deliver the perfect cup of coffee to your doorstep
+        </p>
+        <video id="video" controls>
+            <source src="https://www.youtube.com/watch?v=_bNbada12iM" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <section id="subscribe">
+        <div class="form-container">
+            <h2 class="form-title">Join the Brew Bliss Family</h2>
+            <p class="form-description">
+                Ready to elevate your coffee experience? Enter your email to start your premium coffee subscription
+                today.
+            </p>
+            <form id="form" action="https://www.freecodecamp.com/email-submit" method="POST">
+                <input id="email" type="email" name="email" placeholder="Enter your best email address" required>
+                <input id="submit" type="submit" value="Subscribe Now">
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>
