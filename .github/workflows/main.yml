@@ -1,0 +1,61 @@
+# .github/workflows/deploy-sites.yml
+name: Deploy Multiple Sites
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy-product-landing:
+    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Product-Landing-Page/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy Product Landing Page
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Product-Landing-Page
+        destination_dir: product-landing-page
+        
+  deploy-survey-form:
+    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Survey-Form/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy Survey Form
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Survey-Form
+        destination_dir: survey-form
+
+  deploy-tech-docs:
+    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Technical-Documentation/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy Technical Documentation
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Technical-Documentation
+        destination_dir: tech-docs
+
+  deploy-tribute-page:
+    if: contains(github.event.head_commit.modified, 'CoursesCertificationProjects/Responsive-Web-Design/Tribute-Page/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy Tribute Page
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./CoursesCertificationProjects/Responsive-Web-Design/Tribute-Page
+        destination_dir: tribute-page
