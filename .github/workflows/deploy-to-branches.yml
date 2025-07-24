@@ -1,0 +1,99 @@
+# .github/workflows/deploy-to-branches.yml
+name: Deploy Projects to GitHub Pages Branches
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'CoursesCertificationProjects/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-all-projects:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Deploy each project to its own branch
+        run: |
+          # Configure git
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Find all project directories
+          for project_dir in CoursesCertificationProjects/Responsive-Web-Design/*/; do
+            if [ -f "${project_dir}index.html" ]; then
+              PROJECT_NAME=$(basename "$project_dir")
+              BRANCH_NAME="gh-pages-$PROJECT_NAME"
+              
+              echo "Deploying $PROJECT_NAME to branch $BRANCH_NAME"
+              
+              # Create or checkout the branch
+              git checkout -B "$BRANCH_NAME"
+              
+              # Remove all files except the project files
+              git rm -rf . 2>/dev/null || true
+              
+              # Copy project files to root
+              cp "$project_dir"* . 2>/dev/null || true
+              
+              # Add and commit
+              git add .
+              git commit -m "Deploy $PROJECT_NAME - $(date)" || echo "No changes for $PROJECT_NAME"
+              
+              # Push the branch
+              git push origin "$BRANCH_NAME" --force
+              
+              # Go back to main branch
+              git checkout main
+            fi
+          done
+      
+      - name: Create index page
+        run: |
+          # Create a main index page listing all projects
+          cat > index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>freeCodeCamp Projects</title>
+              <style>
+                  body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+                  .project { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                  .project h3 { margin-top: 0; }
+                  .project a { text-decoration: none; color: #0366d6; }
+                  .project a:hover { text-decoration: underline; }
+              </style>
+          </head>
+          <body>
+              <h1>freeCodeCamp Projects Portfolio</h1>
+              <div id="projects">
+                  <!-- Projects will be listed here -->
+              </div>
+          </body>
+          </html>
+          EOF
+          
+          # Generate project links
+          for project_dir in CoursesCertificationProjects/Responsive-Web-Design/*/; do
+            if [ -f "${project_dir}index.html" ]; then
+              PROJECT_NAME=$(basename "$project_dir")
+              echo "<div class='project'>" >> temp_projects.html
+              echo "<h3><a href='https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$PROJECT_NAME/'>$PROJECT_NAME</a></h3>" >> temp_projects.html
+              echo "<p>View the $PROJECT_NAME project</p>" >> temp_projects.html
+              echo "</div>" >> temp_projects.html
+            fi
+          done
+          
+          # Insert projects into index.html
+          sed -i '/<div id="projects">/r temp_projects.html' index.html
+          rm temp_projects.html
+          
+          # Commit the index page
+          git add index.html
+          git commit -m "Update project index" || echo "No changes to index"
+          git push origin main
