@@ -1,4 +1,3 @@
-# .github/workflows/deploy-to-pages.yml
 name: Deploy Projects to GitHub Pages
 
 on:
@@ -21,10 +20,8 @@ jobs:
       
       - name: Create deployment structure
         run: |
-          # Create a build directory
           mkdir -p build
           
-          # Create main index page
           cat > build/index.html << 'EOF'
           <!DOCTYPE html>
           <html lang="en">
@@ -33,131 +30,77 @@ jobs:
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>freeCodeCamp Projects Portfolio</title>
               <style>
-                  * { margin: 0; padding: 0; box-sizing: border-box; }
                   body { 
-                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-                      line-height: 1.6; 
-                      color: #333; 
-                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                      min-height: 100vh;
-                      padding: 20px;
-                  }
-                  .container { 
+                      font-family: Arial, sans-serif; 
                       max-width: 1200px; 
                       margin: 0 auto; 
-                      background: white;
-                      border-radius: 15px;
-                      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                      overflow: hidden;
+                      padding: 20px;
+                      background-color: #f5f5f5;
                   }
                   .header {
-                      background: linear-gradient(135deg, #0f3460 0%, #0f4c75 100%);
+                      text-align: center;
+                      background: #0a0a23;
                       color: white;
                       padding: 40px 20px;
-                      text-align: center;
+                      border-radius: 10px;
+                      margin-bottom: 30px;
                   }
-                  .header h1 { 
-                      font-size: 2.5rem; 
-                      margin-bottom: 10px;
-                      font-weight: 700;
-                  }
-                  .header p { 
-                      font-size: 1.1rem; 
-                      opacity: 0.9;
-                  }
-                  .projects-grid { 
+                  .header h1 { font-size: 2.5rem; margin: 0; }
+                  .header p { font-size: 1.2rem; margin: 10px 0 0 0; opacity: 0.9; }
+                  .projects { 
                       display: grid; 
                       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
                       gap: 20px; 
-                      padding: 40px 20px;
                   }
-                  .project-card { 
+                  .project { 
                       background: white;
-                      border: 1px solid #e1e5e9;
-                      border-radius: 12px; 
                       padding: 25px;
-                      transition: all 0.3s ease;
-                      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                      border-radius: 10px;
+                      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                      transition: transform 0.3s ease;
                   }
-                  .project-card:hover { 
-                      transform: translateY(-5px);
-                      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-                      border-color: #667eea;
-                  }
-                  .project-card h3 { 
-                      color: #0f3460;
-                      margin-bottom: 10px; 
-                      font-size: 1.4rem;
-                      font-weight: 600;
-                  }
-                  .project-card p { 
-                      color: #666; 
-                      margin-bottom: 15px;
-                      line-height: 1.5;
-                  }
-                  .project-link { 
-                      display: inline-block;
-                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  .project:hover { transform: translateY(-5px); }
+                  .project h3 { color: #0a0a23; margin: 0 0 10px 0; }
+                  .project p { color: #666; margin: 0 0 15px 0; }
+                  .project a { 
+                      background: #0a0a23;
                       color: white;
-                      text-decoration: none; 
                       padding: 10px 20px;
-                      border-radius: 25px;
-                      font-weight: 500;
-                      transition: all 0.3s ease;
+                      text-decoration: none;
+                      border-radius: 5px;
+                      display: inline-block;
                   }
-                  .project-link:hover { 
-                      transform: scale(1.05);
-                      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-                  }
-                  .footer {
-                      background: #f8f9fa;
-                      padding: 20px;
-                      text-align: center;
-                      color: #666;
-                      border-top: 1px solid #e1e5e9;
-                  }
+                  .project a:hover { background: #1b1b32; }
               </style>
           </head>
           <body>
-              <div class="container">
-                  <div class="header">
-                      <h1>🚀 freeCodeCamp Projects</h1>
-                      <p>My journey through responsive web design certification</p>
-                  </div>
-                  <div class="projects-grid" id="projects">
-                      <!-- Projects will be inserted here -->
-                  </div>
-                  <div class="footer">
-                      <p>Built with ❤️ using GitHub Actions</p>
-                  </div>
+              <div class="header">
+                  <h1>freeCodeCamp Projects</h1>
+                  <p>My Web Development Portfolio</p>
+              </div>
+              <div class="projects">
+                  <!-- PROJECTS_PLACEHOLDER -->
               </div>
           </body>
           </html>
           EOF
           
-          # Find and copy all projects
           PROJECT_COUNT=0
-          PROJECTS_HTML=""
+          echo "" > projects.txt
           
           for project_dir in CoursesCertificationProjects/Responsive-Web-Design/*/; do
             if [ -d "$project_dir" ] && [ -f "${project_dir}index.html" ]; then
               PROJECT_NAME=$(basename "$project_dir")
-              
               echo "Processing project: $PROJECT_NAME"
               
-              # Create project directory in build
               mkdir -p "build/$PROJECT_NAME"
-              
-              # Copy all project files
               cp -r "$project_dir"* "build/$PROJECT_NAME/" 2>/dev/null || true
               
-              # Generate project card HTML
-              PROJECTS_HTML="$PROJECTS_HTML
-              <div class=\"project-card\">
-                  <h3>$PROJECT_NAME</h3>
-                  <p>A responsive web design project showcasing HTML, CSS, and modern web development practices.</p>
-                  <a href=\"./$PROJECT_NAME/\" class=\"project-link\">View Project →</a>
-              </div>"
+              echo "<div class=\"project\">" >> projects.txt
+              echo "<h3>$PROJECT_NAME</h3>" >> projects.txt
+              echo "<p>A responsive web design project</p>" >> projects.txt
+              echo "<a href=\"./$PROJECT_NAME/\">View Project</a>" >> projects.txt
+              echo "</div>" >> projects.txt
               
               PROJECT_COUNT=$((PROJECT_COUNT + 1))
             fi
@@ -165,15 +108,24 @@ jobs:
           
           echo "Found $PROJECT_COUNT projects"
           
-          # Insert projects into main index.html
-          if [ $PROJECT_COUNT -gt 0 ]; then
-            # Use sed to replace the projects placeholder
-            sed -i "s|<!-- Projects will be inserted here -->|$PROJECTS_HTML|" build/index.html
-          else
-            sed -i "s|<!-- Projects will be inserted here -->|<div class=\"project-card\"><h3>No projects found</h3><p>Add your projects to CoursesCertificationProjects/Responsive-Web-Design/</p></div>|" build/index.html
+          if [ $PROJECT_COUNT -eq 0 ]; then
+            echo "<div class=\"project\"><h3>No projects found</h3><p>Add projects to get started</p></div>" > projects.txt
           fi
           
-          # List the build directory structure
+          python3 << 'PYTHON_EOF'
+          with open('build/index.html', 'r') as f:
+              content = f.read()
+          
+          with open('projects.txt', 'r') as f:
+              projects = f.read()
+          
+          content = content.replace('<!-- PROJECTS_PLACEHOLDER -->', projects)
+          
+          with open('build/index.html', 'w') as f:
+              f.write(content)
+          PYTHON_EOF
+          
+          rm projects.txt
           echo "Build directory structure:"
           find build -type f | head -20
       
