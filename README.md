@@ -22,12 +22,12 @@ Contains practice exercises, learning implementations, and experimental code dev
 
 ### ✅ Completed Certifications
 - **Scientific Computing with Python** - *Completed*
+- **Responsive Web Design** - *Completed*
 
 ### 🔄 In Progress
-- **Responsive Web Design** - *In Progress*
+- **JavaScript Algorithms and Data Structures** - *In Progress*
 
 ### 📋 Planned Certifications
-- JavaScript Algorithms and Data Structures
 - Front End Development Libraries
 - Data Visualization
 - Back End Development and APIs
