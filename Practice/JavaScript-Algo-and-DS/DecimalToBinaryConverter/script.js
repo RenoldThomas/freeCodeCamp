@@ -4,21 +4,25 @@ const result = document.getElementById("result");
 
 const decimalToBinary = (input) => {
     // Simple Algorithm to convert decimal to binary
-    // 1. Divide the number by 2
-    // 2. Store the quotient and remainder
-    // 3. Repeat the process with the quotient until it becomes 0
-    let binary = "";
+    // let binary = "";
 
-    if (input === 0) {
-        binary = "0";
+    // if (input === 0) {
+    //     binary = "0";
+    // }
+
+    // while (input > 0) {
+    //     binary = (input % 2) + binary;
+    //     input = Math.floor(input / 2);
+    // }
+
+    // result.innerText = binary;
+
+    // Recursive version of the algorithm
+    if (input === 0 || input === 1) {
+        return String(input);
+    } else {
+        return decimalToBinary(Math.floor(input / 2)) + (input % 2);
     }
-
-    while (input > 0) {
-        binary = (input % 2) + binary;
-        input = Math.floor(input / 2);
-    }
-
-    result.innerText = binary;
 };
 
 const checkUserInput = () => {
@@ -31,7 +35,7 @@ const checkUserInput = () => {
         return;
     }
 
-    decimalToBinary(parseInt(numberInput.value));
+    result.textContent = decimalToBinary(parseInt(numberInput.value));
     numberInput.value = "";
 };
 
