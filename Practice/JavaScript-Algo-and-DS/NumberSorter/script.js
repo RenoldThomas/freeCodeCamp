@@ -14,7 +14,15 @@ const sortInputArray = (event) => {
     // const sortedValues = selectionSort(inputValues);
 
     // Insertion Sort
-    const sortedValues = insertionSort(inputValues);
+    // const sortedValues = insertionSort(inputValues);
+
+    // Built-in method
+    const sortedValues = inputValues.sort((a, b) => {
+        // Negative value means a comes before b (ascending order)
+        // Positive value means b comes before a (descending order)
+        // Zero means no change in order
+        return a - b;
+    });
 
     updateUI(sortedValues);
 }
