@@ -11,7 +11,10 @@ const sortInputArray = (event) => {
     // const sortedValues = bubbleSort(inputValues);
 
     // Selection Sort
-    const sortedValues = selectionSort(inputValues);
+    // const sortedValues = selectionSort(inputValues);
+
+    // Insertion Sort
+    const sortedValues = insertionSort(inputValues);
 
     updateUI(sortedValues);
 }
@@ -33,7 +36,6 @@ const bubbleSort = (array) => {
             }
         }
     }
-
     return array;
 }
 
@@ -51,8 +53,21 @@ const selectionSort = (array) => {
         array[i] = array[minIndex];
         array[minIndex] = temp;
     }
-
     return array;
+}
+
+const insertionSort = (array) => {
+  for (let i = 1; i < array.length; i++) {
+    const currValue = array[i];
+    let j = i - 1;
+
+    while (j >= 0 && array[j] > currValue) {
+      array[j + 1] = array[j];
+      j--;
+    }
+    array[j + 1] = currValue;
+  }
+  return array;
 }
 
 
