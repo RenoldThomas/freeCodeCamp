@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Telephone Number Validator</title>
 </head>
-<body>
-    <input id="user-input" type="text"/>
-    <button id="check-btn">Check</button>
-    <button id="clear-btn">Clear</button>
-    <div id="results-div"></div>
-    
 
+<body>
+    <div class="container">
+        <div class="phone-icon">📞</div>
+        <h1>Phone Validator</h1>
+        <p class="subtitle">Enter a US phone number to validate</p>
+
+        <div class="input-group">
+            <input id="user-input" type="text" placeholder="e.g., (555) 123-4567" />
+        </div>
+
+        <div class="button-group">
+            <button id="check-btn">Check</button>
+            <button id="clear-btn">Clear</button>
+        </div>
+
+        <div id="results-div"></div>
+
+        <div class="examples">
+            <h3>Valid Formats</h3>
+            <p>555-555-5555 • (555) 555-5555 • 1 555 555 5555 • 15555555555</p>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
+
 </html>

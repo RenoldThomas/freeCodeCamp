@@ -12,13 +12,21 @@ checkBtn.addEventListener('click', () => {
     if (userInput.value === "") {
         alert("Please provide a phone number");
     } else {
-        return isValidNumber(userInput.value) ?
-            resultsText.textContent = `Valid US number: ${userInput.value}` :
-            resultsText.textContent = `Invalid US number: ${userInput.value}`;
+        const isValid = isValidNumber(userInput.value);
+        resultsText.textContent = isValid ? `Valid US number: ${userInput.value}` : `Invalid US number: ${userInput.value}`;
+        resultsText.className = isValid ? 'show valid' : 'show invalid';
+
     }
 });
 
 clearBtn.addEventListener('click', () => {
     userInput.value = "";
     resultsText.textContent = "";
-})
+    resultsText.className = "";
+});
+
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        checkBtn.click();
+    }
+});
