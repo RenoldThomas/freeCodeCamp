@@ -135,6 +135,3 @@ const makeChange = (changeNeeded, cashInDrawer) => {
 
     return { possible, change };
 };
-
-// Initialize display
-updatePriceDisplay();
