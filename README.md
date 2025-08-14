@@ -28,12 +28,12 @@ Contains practice exercises, learning implementations, and experimental code dev
 - **JavaScript Algorithms and Data Structures** - *In Progress*
 
 ### 📋 Planned Certifications
+- Machine Learning with Python
 - Front End Development Libraries
 - Data Visualization
 - Back End Development and APIs
 - Quality Assurance
 - Information Security
-- Machine Learning with Python
 - Data Analysis with Python
 
 ## 🛠️ Technologies & Languages
