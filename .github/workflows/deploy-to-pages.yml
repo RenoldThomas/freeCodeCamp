@@ -31,12 +31,13 @@ jobs:
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>freeCodeCamp Projects Portfolio</title>
               <style>
+                  * { margin: 0; padding: 0; box-sizing: border-box; }
                   body { 
                       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-                      max-width: 1200px; 
+                      max-width: 1400px; 
                       margin: 0 auto; 
                       padding: 20px;
-                      background-color: #f5f5f5;
+                      background-color: #f8f9fa;
                       line-height: 1.6;
                       color: #333;
                   }
@@ -44,223 +45,623 @@ jobs:
                       text-align: center;
                       background: linear-gradient(135deg, #0a0a23 0%, #1b1b32 100%);
                       color: white;
-                      padding: 50px 20px;
-                      border-radius: 15px;
-                      margin-bottom: 40px;
-                      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                      padding: 60px 30px;
+                      border-radius: 20px;
+                      margin-bottom: 50px;
+                      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
                   }
                   .header h1 { 
-                      font-size: 3rem; 
+                      font-size: 3.5rem; 
                       margin: 0; 
-                      font-weight: 700;
+                      font-weight: 800;
+                      letter-spacing: -1px;
                   }
                   .header p { 
-                      font-size: 1.3rem; 
-                      margin: 15px 0 0 0; 
+                      font-size: 1.4rem; 
+                      margin: 20px 0 0 0; 
                       opacity: 0.9; 
                   }
-                  .section-header {
+                  .stats {
                       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                       color: white;
-                      padding: 20px;
-                      border-radius: 10px;
-                      margin: 40px 0 20px 0;
+                      padding: 25px;
+                      border-radius: 15px;
                       text-align: center;
+                      margin: 40px 0;
+                      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
                   }
-                  .section-header h2 {
-                      margin: 0;
-                      font-size: 2rem;
+                  .stats h3 {
+                      font-size: 1.5rem;
+                      margin: 0 0 10px 0;
                       font-weight: 600;
                   }
-                  .section-header p {
+                  .stats p {
+                      font-size: 1.1rem;
+                      margin: 0;
+                      opacity: 0.95;
+                  }
+                  .main-section {
+                      margin: 60px 0;
+                  }
+                  .main-section-header {
+                      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+                      color: white;
+                      padding: 30px;
+                      border-radius: 15px;
+                      text-align: center;
+                      margin-bottom: 40px;
+                      box-shadow: 0 8px 25px rgba(45, 55, 72, 0.15);
+                  }
+                  .main-section-header h2 {
+                      font-size: 2.5rem;
+                      margin: 0;
+                      font-weight: 700;
+                  }
+                  .main-section-header p {
+                      font-size: 1.2rem;
+                      margin: 12px 0 0 0;
+                      opacity: 0.9;
+                  }
+                  .course-section {
+                      margin: 40px 0;
+                      background: white;
+                      border-radius: 15px;
+                      overflow: hidden;
+                      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+                      border: 1px solid #e2e8f0;
+                  }
+                  .course-header {
+                      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+                      color: white;
+                      padding: 25px 30px;
+                      border-bottom: none;
+                  }
+                  .course-header h3 {
+                      font-size: 1.8rem;
+                      margin: 0;
+                      font-weight: 600;
+                  }
+                  .course-header .course-count {
+                      font-size: 1rem;
                       margin: 8px 0 0 0;
                       opacity: 0.9;
-                      font-size: 1.1rem;
                   }
-                  .projects-grid, .practice-grid { 
-                      display: grid; 
-                      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-                      gap: 25px; 
-                      margin-bottom: 40px;
-                  }
-                  .project, .practice { 
-                      background: white;
+                  .course-projects {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                      gap: 25px;
                       padding: 30px;
+                  }
+                  .project {
+                      background: #fafafa;
+                      padding: 25px;
                       border-radius: 12px;
-                      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                      border: 2px solid transparent;
                       transition: all 0.3s ease;
-                      border: 1px solid #e1e5e9;
+                      position: relative;
                   }
-                  .project:hover, .practice:hover { 
-                      transform: translateY(-8px); 
-                      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-                      border-color: #667eea;
+                  .project:hover {
+                      transform: translateY(-5px);
+                      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+                      border-color: #4299e1;
                   }
-                  .project h3, .practice h3 { 
-                      color: #0a0a23; 
-                      margin: 0 0 12px 0; 
-                      font-size: 1.4rem;
+                  .project h4 {
+                      color: #2d3748;
+                      font-size: 1.3rem;
+                      margin: 0 0 12px 0;
                       font-weight: 600;
                   }
-                  .project p, .practice p { 
-                      color: #666; 
-                      margin: 0 0 20px 0; 
+                  .project p {
+                      color: #718096;
+                      margin: 0 0 20px 0;
                       line-height: 1.5;
                   }
-                  .project a, .practice a { 
-                      background: linear-gradient(135deg, #0a0a23 0%, #1b1b32 100%);
+                  .project .project-type {
+                      position: absolute;
+                      top: 15px;
+                      right: 15px;
+                      background: #e2e8f0;
+                      color: #4a5568;
+                      padding: 4px 8px;
+                      border-radius: 12px;
+                      font-size: 0.75rem;
+                      font-weight: 500;
+                  }
+                  .project a {
+                      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
                       color: white;
-                      padding: 12px 24px;
+                      padding: 12px 20px;
                       text-decoration: none;
                       border-radius: 8px;
                       display: inline-block;
                       font-weight: 500;
                       transition: all 0.3s ease;
+                      font-size: 0.95rem;
                   }
-                  .project a:hover, .practice a:hover { 
-                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  .project a:hover {
+                      background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
                       transform: scale(1.05);
-                      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
                   }
-                  .practice a {
-                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                  }
-                  .practice a:hover {
-                      background: linear-gradient(135deg, #0a0a23 0%, #1b1b32 100%);
-                  }
-                  .stats {
+                  .practice-section {
                       background: white;
+                      border-radius: 15px;
+                      padding: 0;
+                      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+                      border: 1px solid #e2e8f0;
+                      overflow: hidden;
+                  }
+                  .practice-header {
+                      background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+                      color: white;
+                      padding: 25px 30px;
+                  }
+                  .practice-header h3 {
+                      font-size: 1.8rem;
+                      margin: 0;
+                      font-weight: 600;
+                  }
+                  .practice-header .practice-count {
+                      font-size: 1rem;
+                      margin: 8px 0 0 0;
+                      opacity: 0.9;
+                  }
+                  .practice-grid {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                      gap: 20px;
+                      padding: 30px;
+                      max-height: 600px;
+                      overflow-y: auto;
+                  }
+                  .practice-item {
+                      background: #f7fafc;
                       padding: 20px;
                       border-radius: 10px;
-                      text-align: center;
-                      margin: 30px 0;
-                      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                      border: 2px solid transparent;
+                      transition: all 0.3s ease;
+                      position: relative;
                   }
-                  .stats h3 {
-                      color: #0a0a23;
+                  .practice-item:hover {
+                      transform: translateY(-3px);
+                      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+                      border-color: #38a169;
+                  }
+                  .practice-item h4 {
+                      color: #2d3748;
+                      font-size: 1.1rem;
                       margin: 0 0 10px 0;
+                      font-weight: 600;
                   }
-                  .stats p {
-                      color: #666;
-                      margin: 0;
+                  .practice-item p {
+                      color: #718096;
+                      margin: 0 0 15px 0;
+                      font-size: 0.9rem;
+                      line-height: 1.4;
+                  }
+                  .practice-item .practice-type {
+                      position: absolute;
+                      top: 12px;
+                      right: 12px;
+                      background: #e6fffa;
+                      color: #2f855a;
+                      padding: 3px 6px;
+                      border-radius: 10px;
+                      font-size: 0.7rem;
+                      font-weight: 500;
+                  }
+                  .practice-item a {
+                      background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+                      color: white;
+                      padding: 8px 16px;
+                      text-decoration: none;
+                      border-radius: 6px;
+                      display: inline-block;
+                      font-weight: 500;
+                      font-size: 0.9rem;
+                      transition: all 0.3s ease;
+                  }
+                  .practice-item a:hover {
+                      background: linear-gradient(135deg, #2f855a 0%, #276749 100%);
+                      transform: scale(1.03);
+                  }
+                  .load-more {
+                      text-align: center;
+                      padding: 20px;
+                      border-top: 1px solid #e2e8f0;
+                  }
+                  .load-more button {
+                      background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+                      color: white;
+                      border: none;
+                      padding: 12px 24px;
+                      border-radius: 8px;
+                      font-size: 1rem;
+                      font-weight: 500;
+                      cursor: pointer;
+                      transition: all 0.3s ease;
+                  }
+                  .load-more button:hover {
+                      background: linear-gradient(135deg, #2f855a 0%, #276749 100%);
+                      transform: scale(1.05);
+                  }
+                  .load-more button:disabled {
+                      background: #cbd5e0;
+                      cursor: not-allowed;
+                      transform: none;
                   }
                   @media (max-width: 768px) {
-                      .projects-grid, .practice-grid {
-                          grid-template-columns: 1fr;
-                      }
-                      .header h1 {
-                          font-size: 2.2rem;
-                      }
-                      .header p {
-                          font-size: 1.1rem;
-                      }
+                      .header h1 { font-size: 2.5rem; }
+                      .header p { font-size: 1.2rem; }
+                      .main-section-header h2 { font-size: 2rem; }
+                      .course-projects { grid-template-columns: 1fr; padding: 20px; }
+                      .practice-grid { grid-template-columns: 1fr; padding: 20px; }
                   }
               </style>
           </head>
           <body>
               <div class="header">
                   <h1>🚀 freeCodeCamp Portfolio</h1>
-                  <p>My Web Development Journey</p>
+                  <p>My Complete Web Development Journey</p>
               </div>
               
               <div class="stats">
-                  <h3>Portfolio Statistics</h3>
+                  <h3>📊 Portfolio Overview</h3>
                   <p><!-- STATS_PLACEHOLDER --></p>
               </div>
               
-              <div class="section-header">
-                  <h2>📋 Certification Projects</h2>
-                  <p>Required projects for freeCodeCamp certifications</p>
-              </div>
-              <div class="projects-grid">
-                  <!-- PROJECTS_PLACEHOLDER -->
+              <div class="main-section">
+                  <div class="main-section-header">
+                      <h2>🏆 Certification Projects</h2>
+                      <p>Official freeCodeCamp certification requirements across all courses</p>
+                  </div>
+                  <!-- COURSES_PLACEHOLDER -->
               </div>
               
-              <div class="section-header">
-                  <h2>💡 Practice Exercises</h2>
-                  <p>Skills-building exercises and coding challenges</p>
-              </div>
-              <div class="practice-grid">
+              <div class="main-section">
+                  <div class="main-section-header">
+                      <h2>💡 Practice Exercises</h2>
+                      <p>Skill-building exercises and coding challenges from my learning journey</p>
+                  </div>
                   <!-- PRACTICE_PLACEHOLDER -->
               </div>
+              
+              <script>
+                  // Lazy loading for practice items
+                  document.addEventListener('DOMContentLoaded', function() {
+                      const practiceItems = document.querySelectorAll('.practice-item');
+                      const loadMoreBtn = document.querySelector('#loadMoreBtn');
+                      const itemsPerLoad = 12;
+                      let currentlyShown = 0;
+                      
+                      function showMoreItems() {
+                          const endIndex = Math.min(currentlyShown + itemsPerLoad, practiceItems.length);
+                          for (let i = currentlyShown; i < endIndex; i++) {
+                              if (practiceItems[i]) {
+                                  practiceItems[i].style.display = 'block';
+                              }
+                          }
+                          currentlyShown = endIndex;
+                          
+                          if (currentlyShown >= practiceItems.length && loadMoreBtn) {
+                              loadMoreBtn.style.display = 'none';
+                          }
+                      }
+                      
+                      // Hide all items initially except first batch
+                      practiceItems.forEach((item, index) => {
+                          if (index >= itemsPerLoad) {
+                              item.style.display = 'none';
+                          }
+                      });
+                      currentlyShown = Math.min(itemsPerLoad, practiceItems.length);
+                      
+                      // Add load more functionality
+                      if (loadMoreBtn) {
+                          loadMoreBtn.addEventListener('click', showMoreItems);
+                          if (practiceItems.length <= itemsPerLoad) {
+                              loadMoreBtn.style.display = 'none';
+                          }
+                      }
+                  });
+              </script>
           </body>
           </html>
           EOF
           
-          # Process Certification Projects
-          PROJECT_COUNT=0
-          echo "" > projects.txt
+          # Initialize counters
+          TOTAL_PROJECTS=0
+          TOTAL_PRACTICE=0
           
-          for project_dir in CoursesCertificationProjects/Responsive-Web-Design/*/; do
-            if [ -d "$project_dir" ] && [ -f "${project_dir}index.html" ]; then
-              PROJECT_NAME=$(basename "$project_dir")
-              echo "Processing certification project: $PROJECT_NAME"
+          # Process all certification courses
+          echo "" > courses.txt
+          
+          for course_dir in CoursesCertificationProjects/*/; do
+            if [ -d "$course_dir" ]; then
+              COURSE_NAME=$(basename "$course_dir")
+              COURSE_DISPLAY_NAME=$(echo "$COURSE_NAME" | sed 's/-/ /g')
               
-              mkdir -p "build/$PROJECT_NAME"
-              cp -r "$project_dir"* "build/$PROJECT_NAME/" 2>/dev/null || true
+              echo "Processing course: $COURSE_NAME"
               
-              # Create a more descriptive title
-              DISPLAY_NAME=$(echo "$PROJECT_NAME" | sed 's/-/ /g')
+              # Count projects in this course
+              COURSE_PROJECT_COUNT=0
+              echo "" > course_projects_temp.txt
               
-              echo "<div class=\"project\">" >> projects.txt
-              echo "<h3>$DISPLAY_NAME</h3>" >> projects.txt
-              echo "<p>A responsive web design certification project showcasing HTML, CSS, and modern web development practices.</p>" >> projects.txt
-              echo "<a href=\"./$PROJECT_NAME/\">View Project →</a>" >> projects.txt
-              echo "</div>" >> projects.txt
+              # Handle web projects (with index.html)
+              for project_dir in "$course_dir"*/; do
+                if [ -d "$project_dir" ] && [ -f "${project_dir}index.html" ]; then
+                  PROJECT_NAME=$(basename "$project_dir")
+                  echo "  Processing web project: $PROJECT_NAME"
+                  
+                  mkdir -p "build/$PROJECT_NAME"
+                  cp -r "$project_dir"* "build/$PROJECT_NAME/" 2>/dev/null || true
+                  
+                  DISPLAY_NAME=$(echo "$PROJECT_NAME" | sed 's/-/ /g')
+                  
+                  echo "<div class=\"project\">" >> course_projects_temp.txt
+                  echo "<div class=\"project-type\">Web App</div>" >> course_projects_temp.txt
+                  echo "<h4>$DISPLAY_NAME</h4>" >> course_projects_temp.txt
+                  echo "<p>Interactive web application built with HTML, CSS, and JavaScript demonstrating responsive design and modern web development practices.</p>" >> course_projects_temp.txt
+                  echo "<a href=\"./$PROJECT_NAME/\">Launch Project →</a>" >> course_projects_temp.txt
+                  echo "</div>" >> course_projects_temp.txt
+                  
+                  COURSE_PROJECT_COUNT=$((COURSE_PROJECT_COUNT + 1))
+                fi
+              done
               
-              PROJECT_COUNT=$((PROJECT_COUNT + 1))
+              # Handle Python projects (*.py files)
+              for python_file in "$course_dir"*.py; do
+                if [ -f "$python_file" ]; then
+                  PROJECT_NAME=$(basename "$python_file" .py)
+                  echo "  Processing Python project: $PROJECT_NAME"
+                  
+                  mkdir -p "build/python-$PROJECT_NAME"
+                  cp "$python_file" "build/python-$PROJECT_NAME/" 2>/dev/null || true
+                  
+                  # Create a simple HTML viewer for Python code
+                  cat > "build/python-$PROJECT_NAME/index.html" << PYTHON_HTML_EOF
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>$PROJECT_NAME - Python Project</title>
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+              <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+                  .header { background: linear-gradient(135deg, #0a0a23 0%, #1b1b32 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; text-align: center; }
+                  .code-container { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+                  .code-header { background: #2d3748; color: white; padding: 15px 20px; font-weight: 600; }
+                  pre { margin: 0; padding: 20px; overflow-x: auto; }
+                  .back-link { display: inline-block; background: #4299e1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-bottom: 20px; }
+              </style>
+          </head>
+          <body>
+              <a href="../" class="back-link">← Back to Portfolio</a>
+              <div class="header">
+                  <h1>$PROJECT_NAME</h1>
+                  <p>Python Project - Scientific Computing with Python</p>
+              </div>
+              <div class="code-container">
+                  <div class="code-header">$PROJECT_NAME.py</div>
+                  <pre><code class="language-python" id="code-content">Loading code...</code></pre>
+              </div>
+              <script>
+                  fetch('$PROJECT_NAME.py')
+                      .then(response => response.text())
+                      .then(code => {
+                          document.getElementById('code-content').textContent = code;
+                          hljs.highlightAll();
+                      })
+                      .catch(err => {
+                          document.getElementById('code-content').textContent = 'Error loading code: ' + err.message;
+                      });
+              </script>
+          </body>
+          </html>
+          PYTHON_HTML_EOF
+                  
+                  DISPLAY_NAME=$(echo "$PROJECT_NAME" | sed 's/_/ /g' | sed 's/\b\w/\U&/g')
+                  
+                  echo "<div class=\"project\">" >> course_projects_temp.txt
+                  echo "<div class=\"project-type\">Python</div>" >> course_projects_temp.txt
+                  echo "<h4>$DISPLAY_NAME</h4>" >> course_projects_temp.txt
+                  echo "<p>Python script implementing algorithms and data structures for scientific computing applications and mathematical problem-solving.</p>" >> course_projects_temp.txt
+                  echo "<a href=\"./python-$PROJECT_NAME/\">View Code →</a>" >> course_projects_temp.txt
+                  echo "</div>" >> course_projects_temp.txt
+                  
+                  COURSE_PROJECT_COUNT=$((COURSE_PROJECT_COUNT + 1))
+                fi
+              done
+              
+              # Add course section if it has projects
+              if [ $COURSE_PROJECT_COUNT -gt 0 ]; then
+                echo "<div class=\"course-section\">" >> courses.txt
+                echo "<div class=\"course-header\">" >> courses.txt
+                echo "<h3>$COURSE_DISPLAY_NAME</h3>" >> courses.txt
+                echo "<div class=\"course-count\">$COURSE_PROJECT_COUNT projects</div>" >> courses.txt
+                echo "</div>" >> courses.txt
+                echo "<div class=\"course-projects\">" >> courses.txt
+                cat course_projects_temp.txt >> courses.txt
+                echo "</div>" >> courses.txt
+                echo "</div>" >> courses.txt
+                
+                TOTAL_PROJECTS=$((TOTAL_PROJECTS + COURSE_PROJECT_COUNT))
+              fi
+              
+              rm -f course_projects_temp.txt
             fi
           done
           
-          # Process Practice Projects
-          PRACTICE_COUNT=0
+          # Process all practice exercises
           echo "" > practice.txt
+          echo "<div class=\"practice-section\">" >> practice.txt
           
-          for practice_dir in Practice/Responsive-Web-Design/*/; do
-            if [ -d "$practice_dir" ] && [ -f "${practice_dir}index.html" ]; then
-              PRACTICE_NAME=$(basename "$practice_dir")
-              echo "Processing practice project: $PRACTICE_NAME"
+          PRACTICE_SECTIONS=""
+          
+          for practice_course_dir in Practice/*/; do
+            if [ -d "$practice_course_dir" ]; then
+              PRACTICE_COURSE_NAME=$(basename "$practice_course_dir")
+              echo "Processing practice course: $PRACTICE_COURSE_NAME"
               
-              # Create practice directory with "practice-" prefix to avoid conflicts
-              mkdir -p "build/practice-$PRACTICE_NAME"
-              cp -r "$practice_dir"* "build/practice-$PRACTICE_NAME/" 2>/dev/null || true
+              COURSE_PRACTICE_COUNT=0
               
-              # Create a more descriptive title
-              DISPLAY_NAME=$(echo "$PRACTICE_NAME" | sed 's/-/ /g' | sed 's/CSS/CSS /')
+              # Handle HTML/CSS/JS practice projects
+              for practice_dir in "$practice_course_dir"*/; do
+                if [ -d "$practice_dir" ] && [ -f "${practice_dir}index.html" ]; then
+                  PRACTICE_NAME=$(basename "$practice_dir")
+                  echo "  Processing practice web project: $PRACTICE_NAME"
+                  
+                  mkdir -p "build/practice-$PRACTICE_NAME"
+                  cp -r "$practice_dir"* "build/practice-$PRACTICE_NAME/" 2>/dev/null || true
+                  
+                  DISPLAY_NAME=$(echo "$PRACTICE_NAME" | sed 's/CSS/CSS /' | sed 's/-/ /g')
+                  COURSE_DISPLAY=$(echo "$PRACTICE_COURSE_NAME" | sed 's/-/ /g')
+                  
+                  echo "<div class=\"practice-item\">" >> practice.txt
+                  echo "<div class=\"practice-type\">$COURSE_DISPLAY</div>" >> practice.txt
+                  echo "<h4>$DISPLAY_NAME</h4>" >> practice.txt
+                  echo "<p>Practice exercise focusing on specific concepts and techniques in web development.</p>" >> practice.txt
+                  echo "<a href=\"./practice-$PRACTICE_NAME/\">Try Exercise →</a>" >> practice.txt
+                  echo "</div>" >> practice.txt
+                  
+                  COURSE_PRACTICE_COUNT=$((COURSE_PRACTICE_COUNT + 1))
+                  TOTAL_PRACTICE=$((TOTAL_PRACTICE + 1))
+                fi
+              done
               
-              echo "<div class=\"practice\">" >> practice.txt
-              echo "<h3>$DISPLAY_NAME</h3>" >> practice.txt
-              echo "<p>A hands-on coding exercise to practice specific HTML and CSS concepts and techniques.</p>" >> practice.txt
-              echo "<a href=\"./practice-$PRACTICE_NAME/\">Try Exercise →</a>" >> practice.txt
-              echo "</div>" >> practice.txt
+              # Handle Python practice files
+              for python_file in "$practice_course_dir"*.py; do
+                if [ -f "$python_file" ]; then
+                  PRACTICE_NAME=$(basename "$python_file" .py)
+                  echo "  Processing practice Python file: $PRACTICE_NAME"
+                  
+                  mkdir -p "build/practice-python-$PRACTICE_NAME"
+                  cp "$python_file" "build/practice-python-$PRACTICE_NAME/" 2>/dev/null || true
+                  
+                  # Create HTML viewer for Python practice
+                  cat > "build/practice-python-$PRACTICE_NAME/index.html" << PYTHON_PRACTICE_EOF
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>$PRACTICE_NAME - Python Practice</title>
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+              <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+                  .header { background: linear-gradient(135deg, #38a169 0%, #2f855a 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; text-align: center; }
+                  .code-container { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+                  .code-header { background: #2d3748; color: white; padding: 15px 20px; font-weight: 600; }
+                  pre { margin: 0; padding: 20px; overflow-x: auto; }
+                  .back-link { display: inline-block; background: #38a169; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-bottom: 20px; }
+              </style>
+          </head>
+          <body>
+              <a href="../" class="back-link">← Back to Portfolio</a>
+              <div class="header">
+                  <h1>$PRACTICE_NAME</h1>
+                  <p>Python Practice Exercise</p>
+              </div>
+              <div class="code-container">
+                  <div class="code-header">$PRACTICE_NAME.py</div>
+                  <pre><code class="language-python" id="code-content">Loading code...</code></pre>
+              </div>
+              <script>
+                  fetch('$PRACTICE_NAME.py')
+                      .then(response => response.text())
+                      .then(code => {
+                          document.getElementById('code-content').textContent = code;
+                          hljs.highlightAll();
+                      })
+                      .catch(err => {
+                          document.getElementById('code-content').textContent = 'Error loading code: ' + err.message;
+                      });
+              </script>
+          </body>
+          </html>
+          PYTHON_PRACTICE_EOF
+                  
+                  DISPLAY_NAME=$(echo "$PRACTICE_NAME" | sed 's/_/ /g' | sed 's/\b\w/\U&/g')
+                  
+                  echo "<div class=\"practice-item\">" >> practice.txt
+                  echo "<div class=\"practice-type\">Python</div>" >> practice.txt
+                  echo "<h4>$DISPLAY_NAME</h4>" >> practice.txt
+                  echo "<p>Python practice exercise for algorithm development and problem-solving skills.</p>" >> practice.txt
+                  echo "<a href=\"./practice-python-$PRACTICE_NAME/\">View Code →</a>" >> practice.txt
+                  echo "</div>" >> practice.txt
+                  
+                  COURSE_PRACTICE_COUNT=$((COURSE_PRACTICE_COUNT + 1))
+                  TOTAL_PRACTICE=$((TOTAL_PRACTICE + 1))
+                fi
+              done
               
-              PRACTICE_COUNT=$((PRACTICE_COUNT + 1))
+              PRACTICE_SECTIONS="$PRACTICE_SECTIONS$PRACTICE_COURSE_NAME ($COURSE_PRACTICE_COUNT), "
             fi
           done
           
-          echo "Found $PROJECT_COUNT certification projects and $PRACTICE_COUNT practice exercises"
-          
-          # Handle empty sections
-          if [ $PROJECT_COUNT -eq 0 ]; then
-            echo "<div class=\"project\"><h3>No certification projects found</h3><p>Certification projects will appear here once added</p></div>" > projects.txt
+          # Complete practice section
+          if [ $TOTAL_PRACTICE -eq 0 ]; then
+            echo "<div class=\"practice-header\">" >> practice.txt
+            echo "<h3>No Practice Exercises</h3>" >> practice.txt
+            echo "<div class=\"practice-count\">Practice exercises will appear here once added</div>" >> practice.txt
+            echo "</div>" >> practice.txt
+            echo "<div class=\"practice-grid\">" >> practice.txt
+            echo "<div class=\"practice-item\">" >> practice.txt
+            echo "<h4>Getting Started</h4>" >> practice.txt
+            echo "<p>Add your practice exercises to the Practice directory to see them here.</p>" >> practice.txt
+            echo "</div>" >> practice.txt
+            echo "</div>" >> practice.txt
+          else
+            echo "<div class=\"practice-header\">" >> practice.txt
+            echo "<h3>Practice Exercises</h3>" >> practice.txt
+            echo "<div class=\"practice-count\">$TOTAL_PRACTICE exercises across multiple courses</div>" >> practice.txt
+            echo "</div>" >> practice.txt
+            echo "<div class=\"practice-grid\">" >> practice.txt
+            # Practice items are already added above
+            echo "</div>" >> practice.txt
+            
+            # Add load more button if there are many practice items
+            if [ $TOTAL_PRACTICE -gt 12 ]; then
+              echo "<div class=\"load-more\">" >> practice.txt
+              echo "<button id=\"loadMoreBtn\">Load More Exercises</button>" >> practice.txt
+              echo "</div>" >> practice.txt
+            fi
           fi
           
-          if [ $PRACTICE_COUNT -eq 0 ]; then
-            echo "<div class=\"practice\"><h3>No practice exercises found</h3><p>Practice exercises will appear here once added</p></div>" > practice.txt
-          fi
+          echo "</div>" >> practice.txt
           
           # Create stats content
-          TOTAL_COUNT=$((PROJECT_COUNT + PRACTICE_COUNT))
-          echo "$TOTAL_COUNT total projects • $PROJECT_COUNT certification projects • $PRACTICE_COUNT practice exercises" > stats.txt
+          TOTAL_COUNT=$((TOTAL_PROJECTS + TOTAL_PRACTICE))
+          echo "$TOTAL_COUNT total items • $TOTAL_PROJECTS certification projects • $TOTAL_PRACTICE practice exercises" > stats.txt
+          
+          # Handle empty courses
+          if [ $TOTAL_PROJECTS -eq 0 ]; then
+            echo "<div class=\"course-section\">" > courses.txt
+            echo "<div class=\"course-header\">" >> courses.txt
+            echo "<h3>No Certification Projects</h3>" >> courses.txt
+            echo "<div class=\"course-count\">Projects will appear here once added</div>" >> courses.txt
+            echo "</div>" >> courses.txt
+            echo "<div class=\"course-projects\">" >> courses.txt
+            echo "<div class=\"project\">" >> courses.txt
+            echo "<h4>Getting Started</h4>" >> courses.txt
+            echo "<p>Add your certification projects to see them organized by course here.</p>" >> courses.txt
+            echo "</div>" >> courses.txt
+            echo "</div>" >> courses.txt
+            echo "</div>" >> courses.txt
+          fi
+          
+          echo "Found $TOTAL_PROJECTS certification projects and $TOTAL_PRACTICE practice exercises"
           
           # Replace placeholders using Python
           python3 << 'PYTHON_EOF'
           with open('build/index.html', 'r') as f:
               content = f.read()
           
-          # Read projects content
-          with open('projects.txt', 'r') as f:
-              projects = f.read()
+          # Read courses content
+          with open('courses.txt', 'r') as f:
+              courses = f.read()
           
           # Read practice content
           with open('practice.txt', 'r') as f:
@@ -271,7 +672,7 @@ jobs:
               stats = f.read()
           
           # Replace all placeholders
-          content = content.replace('<!-- PROJECTS_PLACEHOLDER -->', projects)
+          content = content.replace('<!-- COURSES_PLACEHOLDER -->', courses)
           content = content.replace('<!-- PRACTICE_PLACEHOLDER -->', practice)
           content = content.replace('<!-- STATS_PLACEHOLDER -->', stats)
           
@@ -280,10 +681,10 @@ jobs:
           PYTHON_EOF
           
           # Clean up temp files
-          rm projects.txt practice.txt stats.txt
+          rm -f courses.txt practice.txt stats.txt course_projects_temp.txt
           
           echo "Build directory structure:"
-          find build -type f | head -30
+          find build -type f | head -40
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
