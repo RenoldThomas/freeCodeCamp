@@ -401,7 +401,7 @@ jobs:
                   echo "<div class=\"project-type\">Web App</div>" >> course_projects_temp.txt
                   echo "<h4>$DISPLAY_NAME</h4>" >> course_projects_temp.txt
                   echo "<p>Interactive web application built with HTML, CSS, and JavaScript demonstrating responsive design and modern web development practices.</p>" >> course_projects_temp.txt
-                  echo "<a href=\"./$PROJECT_NAME/\">Launch Project →</a>" >> course_projects_temp.txt
+                  echo "<a href=\"./$PROJECT_NAME/\" target="_blank">Launch Project →</a>" >> course_projects_temp.txt
                   echo "</div>" >> course_projects_temp.txt
                   
                   COURSE_PROJECT_COUNT=$((COURSE_PROJECT_COUNT + 1))
@@ -437,7 +437,6 @@ jobs:
               </style>
           </head>
           <body>
-              <a href="../" class="back-link">← Back to Portfolio</a>
               <div class="header">
                   <h1>$PROJECT_NAME</h1>
                   <p>Python Project - Scientific Computing with Python</p>
@@ -467,7 +466,7 @@ jobs:
                   echo "<div class=\"project-type\">Python</div>" >> course_projects_temp.txt
                   echo "<h4>$DISPLAY_NAME</h4>" >> course_projects_temp.txt
                   echo "<p>Python script implementing algorithms and data structures for scientific computing applications and mathematical problem-solving.</p>" >> course_projects_temp.txt
-                  echo "<a href=\"./python-$PROJECT_NAME/\">View Code →</a>" >> course_projects_temp.txt
+                  echo "<a href=\"./python-$PROJECT_NAME/\" target="_blank">View Code →</a>" >> course_projects_temp.txt
                   echo "</div>" >> course_projects_temp.txt
                   
                   COURSE_PROJECT_COUNT=$((COURSE_PROJECT_COUNT + 1))
@@ -522,7 +521,7 @@ jobs:
                   echo "<div class=\"practice-type\">$COURSE_DISPLAY</div>" >> practice.txt
                   echo "<h4>$DISPLAY_NAME</h4>" >> practice.txt
                   echo "<p>Practice exercise focusing on specific concepts and techniques in web development.</p>" >> practice.txt
-                  echo "<a href=\"./practice-$PRACTICE_NAME/\">Try Exercise →</a>" >> practice.txt
+                  echo "<a href=\"./practice-$PRACTICE_NAME/\" target="_blank">Try Exercise →</a>" >> practice.txt
                   echo "</div>" >> practice.txt
                   
                   COURSE_PRACTICE_COUNT=$((COURSE_PRACTICE_COUNT + 1))
@@ -589,7 +588,7 @@ jobs:
                   echo "<div class=\"practice-type\">Python</div>" >> practice.txt
                   echo "<h4>$DISPLAY_NAME</h4>" >> practice.txt
                   echo "<p>Python practice exercise for algorithm development and problem-solving skills.</p>" >> practice.txt
-                  echo "<a href=\"./practice-python-$PRACTICE_NAME/\">View Code →</a>" >> practice.txt
+                  echo "<a href=\"./practice-python-$PRACTICE_NAME/\" target="_blank">View Code →</a>" >> practice.txt
                   echo "</div>" >> practice.txt
                   
                   COURSE_PRACTICE_COUNT=$((COURSE_PRACTICE_COUNT + 1))
