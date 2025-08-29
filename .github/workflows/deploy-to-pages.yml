@@ -558,7 +558,6 @@ jobs:
               </style>
           </head>
           <body>
-              <a href="../" class="back-link">← Back to Portfolio</a>
               <div class="header">
                   <h1>$PRACTICE_NAME</h1>
                   <p>Python Practice Exercise</p>
